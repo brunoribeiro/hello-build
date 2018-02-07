@@ -1,10 +1,8 @@
 FROM rustlang/rust:nightly AS build
-# FROM ekidd/rust-musl-builder:nightly AS build
 
 WORKDIR /usr/src/app
 COPY Cargo.toml .
 COPY src/ src/
-# RUN sudo chmod -R 777 /usr/src/app
 RUN cargo build --release
 
 FROM debian:stretch AS package
