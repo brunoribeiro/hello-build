@@ -1,0 +1,8 @@
+[package]
+name = "hello_build"
+version = "0.1.0"
+authors = ["Nicholas Wolverson <nwolverson@scottlogic.com>"]
+
+[dependencies]
+rocket = "*"
+rocket_codegen = "*"
