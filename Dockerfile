@@ -1,7 +1,13 @@
 FROM rustlang/rust:nightly AS build
 
 WORKDIR /usr/src/app
+
+# Build deps
 COPY Cargo.toml .
+RUN mkdir -p src && echo > src/main.rs "fn main() {}"
+RUN cargo build --release
+
+# Build app
 COPY src/ src/
 RUN cargo build --release
 
