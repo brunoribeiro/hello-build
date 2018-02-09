@@ -3,12 +3,16 @@ services:
   - docker:dind
 variables:
   DOCKER_DRIVER: overlay2
-  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  IMAGE_TAG: $CI_REGISTRY_IMAGE/hello:$CI_COMMIT_SHA
+  BUILD_IMAGE_TAG: $CI_REGISTRY_IMAGE/build:latest
 
 build:
   stage: build
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $IMAGE_TAG .
+    - docker pull $BUILD_IMAGE_TAG || true
+    - docker build -t $BUILD_IMAGE_TAG --cache-from $BUILD_IMAGE_TAG --target build .
+    - docker push $BUILD_IMAGE_TAG
+    - docker build -t $IMAGE_TAG  --cache-from $IMAGE_TAG --cache-from $BUILD_IMAGE_TAG .
     - docker push $IMAGE_TAG
