@@ -16,3 +16,46 @@ build:
     - docker push $BUILD_IMAGE_TAG
     - docker build -t $IMAGE_TAG  --cache-from $IMAGE_TAG --cache-from $BUILD_IMAGE_TAG .
     - docker push $IMAGE_TAG
+
+deploy_review:
+  stage: deploy
+  image: coxauto/aws-ebcli
+  script:
+    - ./deploy.sh
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://hello-build-$CI_ENVIRONMENT_SLUG.eu-west-2.elasticbeanstalk.com
+    on_stop: stop_review
+  only:
+    - branches
+  except:
+    - master
+
+stop_review:
+  stage: deploy
+  image: coxauto/aws-ebcli
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - eb init project -r eu-west-2 -p docker-17.09.1-ce
+    - eb terminate "$CI_ENVIRONMENT_SLUG" | tee "$CIRCLE_ARTIFACTS/eb_deploy_output.txt"
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  only:
+    - branches
+  except:
+    - master
+  when:
+    manual
+    
+deploy:
+  stage: deploy
+  image: coxauto/aws-ebcli
+  script:
+    - ./deploy.sh
+  environment:
+    name: dev
+    url: http://hello-build-dev.eu-west-2.elasticbeanstalk.com
+  only:
+    - master

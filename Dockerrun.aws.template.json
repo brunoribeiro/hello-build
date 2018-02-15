@@ -1,0 +1,19 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "",
+      "Update": "true"
+    },
+    "Authentication": {
+      "Bucket": "nw-ci-credentials",
+      "Key": "gitlab-registry.json"
+    },
+    "Ports": [
+      {
+        "ContainerPort": "8000"
+      }
+    ],
+    "Volumes": [
+
+    ]
+}
