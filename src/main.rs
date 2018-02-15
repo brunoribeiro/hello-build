@@ -5,7 +5,7 @@ extern crate rocket;
 
 #[get("/")]
 fn hello() -> &'static str {
-    "Hello, world! Here's a number: 1"
+    "Hello, world! Here's a number: 42"
 }
 
 fn main() {
