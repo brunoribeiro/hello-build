@@ -55,7 +55,7 @@ deploy:
   script:
     - ./deploy.sh
   environment:
-    name: dev
+    name: development
     url: http://hello-build-dev.eu-west-2.elasticbeanstalk.com
   only:
     - master
