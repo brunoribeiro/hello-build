@@ -37,7 +37,7 @@ stop_review:
   variables:
     GIT_STRATEGY: none
   script:
-    - eb init project -r eu-west-2 -p docker-17.09.1-ce
+    - eb init hello -r eu-west-2 -p docker-17.09.1-ce
     - eb terminate "$CI_ENVIRONMENT_SLUG" | tee "$CIRCLE_ARTIFACTS/eb_deploy_output.txt"
   environment:
     name: review/$CI_COMMIT_REF_NAME
